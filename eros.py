@@ -2,18 +2,23 @@ from utils import *
 
 # switch_rows
 def erosI(A, row1, row2):
-    check_empty_matrix(A)
+    assert not is_empty(A)
     A[row1], A[row2] = A[row2], A[row1]
+    return A
 
-# scalar multiplication
-def erosII(A, target_row, scalar):
-    check_empty_matrix(A)
-    A[target_row] = [element * scalar for element in A[target_row]]
+# scalar multiplication / row reduction
+def erosII(A, target_row):
+    assert not is_empty(A)
+    leading_coefficient = A[target_row][target_row]
+    A[target_row] = [element / leading_coefficient for element in A[target_row]]
+    return A
 
 # elimination
 def erosIII(A, ref_row, target_row, scalar):
-    check_empty_matrix(A)
+    assert scalar != 0
+    assert not is_empty(A)
     A[target_row] = [a - b * scalar for a, b in zip(A[target_row], A[ref_row])]
+    return A
     # Note: This is a simplified version and may not cover all edge cases.
 
 def main():

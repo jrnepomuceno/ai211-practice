@@ -15,11 +15,12 @@ def erosII(A, target_row):
 
 # elimination
 def erosIII(A, ref_row, target_row, scalar):
-    assert scalar != 0
     assert not is_empty(A)
     A[target_row] = [a - b * scalar for a, b in zip(A[target_row], A[ref_row])]
     return A
     # Note: This is a simplified version and may not cover all edge cases.
+
+
 
 def main():
 

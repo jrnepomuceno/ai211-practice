@@ -1,6 +1,6 @@
 import sys
 from eros import *
-from algorithms import naive_gaussian_elimination, improved_gaussian_elimination
+from algorithms import naive_gaussian_elimination, gaussian_elimination_two
 from equations import print_values
 import numpy as np  # for formatting only
 
@@ -22,7 +22,7 @@ def main(args):
     values_1 = naive_gaussian_elimination(ref_A, ref_b)
     print_values(values_1)
 
-    values_2 = improved_gaussian_elimination(ref_A, ref_b)
+    values_2 = gaussian_elimination_two(ref_A, ref_b)
     print_values(values_2)
 
 if __name__ == "__main__":

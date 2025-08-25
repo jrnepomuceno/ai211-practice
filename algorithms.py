@@ -59,7 +59,7 @@ def naive_gaussian_elimination(ref_matrix, b):
 Get values using Elementary Matrix Multiplication
 """
 @timing_decorator
-def improved_gaussian_elimination(ref_matrix, b):
+def gaussian_elimination_two(ref_matrix, b):
 
     augmented_matrix = augment_matrix(ref_matrix, b)
     saved_aug_matrix = augmented_matrix.copy()
@@ -133,5 +133,5 @@ if __name__ == "__main__":
     for index, row in enumerate(ref_matrix):
         b[index] = [row[-1]]
 
-    values = improved_gaussian_elimination(A, b)
+    values = gaussian_elimination_two(A, b)
     print(np.array(values))

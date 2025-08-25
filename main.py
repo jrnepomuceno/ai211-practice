@@ -19,8 +19,11 @@ def main(args):
         [-5]
     ]
 
-    values = naive_gaussian_elimination(ref_A, ref_b)
-    print_values(values)
+    values_1 = naive_gaussian_elimination(ref_A, ref_b)
+    print_values(values_1)
+
+    values_2 = improved_gaussian_elimination(ref_A, ref_b)
+    print_values(values_2)
 
 if __name__ == "__main__":
     main(sys.argv)

@@ -20,17 +20,20 @@ def naive_gaussian_elimination(ref_matrix, b):
     print()
     for col in range(cols-1):
         index, max_coeff = get_index_max_coeff(augmented_matrix, col)
-        #print(f"Column {col}: Max coefficient {max_coeff} at row {index}")
+        # print(f"Column {col}: Max coefficient {max_coeff} at row {index}")
         if index != col:
             # perform swap
             augmented_matrix = erosI(augmented_matrix, col, index)
             # print(f"Swapped rows {col} and {index}:")
             # print(np.array(augmented_matrix))
-        if(augmented_matrix[col][col] != 1 or augmented_matrix[col][col] != 0):
-            # perform reduction
-            augmented_matrix = erosII(augmented_matrix, col)
+
+        # perform reduction
+        leading_coefficient = augmented_matrix[col][col]
+        if(leading_coefficient != 1 or leading_coefficient != 1.0):
+            augmented_matrix = erosII(augmented_matrix, col, leading_coefficient)
             # print(f"Scaled row {col} to make leading coefficient 1:")
             # print(np.array(augmented_matrix))
+
         # perform elimination
         if col < (cols-2):  # Avoid last column of A
             for row in range(col+1, rows):
@@ -45,14 +48,21 @@ def naive_gaussian_elimination(ref_matrix, b):
     new_A = result[:,:-1]
     new_b = result[:,-1:]
 
+    """
+    Get values using Back Substitution
+    """
     values = equations.back_substitution(new_A, new_b, 0)
 
     return values
 
+"""
+Get values using Elementary Matrix Multiplication
+"""
 @timing_decorator
 def improved_gaussian_elimination(ref_matrix, b):
 
     augmented_matrix = augment_matrix(ref_matrix, b)
+    saved_aug_matrix = augmented_matrix.copy()
     rows, cols = get_matrix_shape(augmented_matrix)
     if rows == 0 or cols == 0:
         print("The matrix is empty.")
@@ -62,35 +72,53 @@ def improved_gaussian_elimination(ref_matrix, b):
     print()
 
     I = np.identity(rows)
-    print(I)
+    # print(I)
+    E_collection = []
 
     for col in range(cols-1):
         index, max_coeff = get_index_max_coeff(augmented_matrix, col)
-        print(f"Column {col}: Max coefficient {max_coeff} at row {index}")
+        # print(f"Column {col}: Max coefficient {max_coeff} at row {index}")
         if index != col:
             # perform swap
-            augmented_matrix = erosI(augmented_matrix, col, index)
-            I = erosI(I, col, index)
-            print(f"Swapped rows {col} and {index}:")
-            #print(np.array(augmented_matrix))
-            print(np.array(I))
-            # perform reduction
-            augmented_matrix, I = erosII(augmented_matrix, col, I)
-            print(f"Scaled row {col} to make leading coefficient 1:")
-            #print(np.array(augmented_matrix))
-            print(np.array(I))
+            E = erosI(I.copy(), col, index)
+            # print(np.array(E))
+            augmented_matrix = E @ augmented_matrix
+            # print(f"Swapped rows {col} and {index}:")
+            # print(np.array(augmented_matrix))
+            # print(np.array(E_collection))
+
+        # perform reduction
+        leading_coefficient = augmented_matrix[col][col]
+        if(leading_coefficient != 1 or leading_coefficient != 1.0 or leading_coefficient != 0):
+            E = erosII(I.copy(), col, leading_coefficient)
+            augmented_matrix = E @ augmented_matrix
+            # print(f"Scaled row {col} to make leading coefficient 1:")
+            # print(np.array(augmented_matrix))
+            # print(np.array(E_collection))
 
         # perform elimination
         if col < (cols-2):  # Avoid last column of A
             for row in range(col+1, rows):
                 if row != col:
                     factor = augmented_matrix[row][col] / augmented_matrix[col][col]
-                    augmented_matrix, I = erosIII(augmented_matrix, col, row, factor)
-                    print(f"Eliminated column {col} in row {row}:")
-                    #print(np.array(augmented_matrix))
-                    print(np.array(I))
+                    E = erosIII(I.copy(), col, row, factor)
+                    # print(np.array(E))
+                    augmented_matrix = E @ augmented_matrix
+                    # print(f"Eliminated column {col} in row {row}:")
+                    # print(np.array(augmented_matrix))
+                    # print(np.array(E_collection))
 
-    return []
+
+    result = np.array(augmented_matrix)
+
+    new_A = result[:,:-1]
+    new_b = result[:,-1:]
+
+    """
+    Get values using Back Substitution
+    """
+    values = equations.back_substitution(new_A, new_b, 0)
+    return values
 
 if __name__ == "__main__":
 

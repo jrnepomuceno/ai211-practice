@@ -41,10 +41,9 @@ def ge_with_pivoting_general_sle(ref_matrix, b):
                     augmented_matrix = erosII(augmented_matrix, row, col, leading_coefficient)
 
                 # perform elimination
-                if col < (cols-1):
-                    for elim_row in range(row+1, rows):
-                        factor = augmented_matrix[elim_row][col] #/ augmented_matrix[row][col]
-                        augmented_matrix = erosIII(augmented_matrix, row, elim_row, col, factor)
+                for elim_row in range(row+1, rows):
+                    factor = augmented_matrix[elim_row][col] #/ augmented_matrix[row][col]
+                    augmented_matrix = erosIII(augmented_matrix, row, elim_row, col, factor)
 
                 break
 
@@ -73,10 +72,9 @@ def gauss_jordan_elimination(ref_A, ref_b):
                 continue
 
             # perform elimination
-            if col < (cols-1): 
-                for elim_row in range(0, row):
-                    factor = round(augmented_matrix[elim_row][col], 5) # / augmented_matrix[row][col]
-                    augmented_matrix = erosIII(augmented_matrix, row, elim_row, col, factor)
+            for elim_row in range(0, row):
+                factor = round(augmented_matrix[elim_row][col], 5) # / augmented_matrix[row][col]
+                augmented_matrix = erosIII(augmented_matrix, row, elim_row, col, factor)
 
             break
 

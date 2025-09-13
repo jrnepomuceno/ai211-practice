@@ -34,8 +34,6 @@ def erosIII(A, ref_row, target_row, target_column, scalar):
             temp = 0
         new_row.append(temp)
 
-    # A[target_row] = [*A[target_row][0:target_column],
-    #                  *[round(a + (b * (-1*scalar)), 5) for a, b in zip(A[target_row][target_column::], A[ref_row][target_column::])]]
     A[target_row] = [*A[target_row][0:target_column],*new_row]
     return A
 

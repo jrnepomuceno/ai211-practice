@@ -20,6 +20,27 @@ def erosIII(A, ref_row, target_row, scalar):
     return A
 
 
+def generate_EI(row1, row2, n):
+    E = np.eye(n)
+    E[row2][row1] = 1
+    E[row1][row2] = 1
+    E[row1][row1] = 0
+    E[row2][row2] = 0
+    return E
+
+# scalar multiplication / row reduction
+def generate_EII(target_row, m, n):
+    E = np.eye(n)
+    E[target_row][target_row] = m
+    return E
+
+# elimination
+def generate_EIII(ref_row, target_row, m, n):
+    E = np.eye(n)
+    E[target_row][ref_row] = -1*(m)
+    # print(np.array(E))
+    return E
+
 def main():
 
     ref_matrix = [
@@ -36,6 +57,8 @@ def main():
     rows, cols = get_matrix_shape(augmented_matrix)
     if rows == 0 or cols == 0:
         print("The matrix is empty.")
+
+    print(np.array(generate_EI(0,2,len(augmented_matrix))))
 
     print(augmented_matrix)
 

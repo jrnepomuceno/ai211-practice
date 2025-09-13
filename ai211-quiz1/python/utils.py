@@ -12,7 +12,13 @@ def augment_matrix(A, B):
     if len(A) != len(B):
         raise ValueError("Matrices must have the same number of rows to be augmented.")
 
-    return [row1 + row2 for row1, row2 in zip(A,B)]
+    # for row1, row2 in zip(A,B):
+    #     print(row1)
+    #     print(row2)
+    #     row3 = np.concatenate((row1,row2), axis=None)
+    #     print(row3)
+
+    return [np.concatenate((row1,row2), axis=None) for row1, row2 in zip(A,B)]
 
 
 def get_index_max_coeff(matrix, col):
